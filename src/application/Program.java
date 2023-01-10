@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import boardgame.exceptions.BoardException;
@@ -11,13 +13,15 @@ import chess.exceptions.ChessException;
 public class Program {
 
 	public static void main(String[] args) {
+		
+		List<ChessPiece> captured = new ArrayList<>();
 		ChessMatch chessMatch = new ChessMatch();
 		Scanner sc = new Scanner(System.in);
 		
 		while (true) {
 			try {
 				UI.clearScreen();
-				UI.printMatch(chessMatch);
+				UI.printMatch(chessMatch, captured);
 				System.out.println();
 				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(sc);
@@ -30,7 +34,11 @@ public class Program {
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(sc);
 				
-				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);	
+				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
+				
+				if (capturedPiece != null) {
+					captured.add(capturedPiece);
+				}
 			} catch (ChessException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();
